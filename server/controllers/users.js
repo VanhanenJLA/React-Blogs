@@ -1,7 +1,6 @@
 const bcrypt = require('bcrypt')
 const usersRouter = require('express').Router()
 const User = require('../models/user')
-require('express-async-errors')
 
 usersRouter.get('/', async (request, response) => {
   const users = await User
