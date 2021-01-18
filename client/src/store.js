@@ -8,7 +8,7 @@ import userReducer from './reducers/user'
 import usersReducer from './reducers/users'
 
 const reducer = combineReducers({
-  notification: notificationReducer,
+  notification: notificationReducer.reducer,
   blogs: blogsReducer.reducer,
   user: userReducer.reducer,
   users: usersReducer.reducer
@@ -16,9 +16,7 @@ const reducer = combineReducers({
 
 const store = createStore(
   reducer,
-  composeWithDevTools(
-    applyMiddleware(thunk)
-  )
+  composeWithDevTools(applyMiddleware(thunk))
 )
 
 export default store

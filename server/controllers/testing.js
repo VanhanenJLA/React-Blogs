@@ -1,6 +1,9 @@
 const router = require('express').Router()
 const Blog = require('../models/blog')
 const User = require('../models/user')
+const bcrypt = require('bcrypt')
+
+const dummyUser = { username: 'dummy', name: 'Tyhäm Tester', password: 'salasana' }
 
 const blogs = [
   { _id: "5a422a851b54a676234d17f7", title: "React patterns", author: "Michael Chan", url: "https://reactpatterns.com/", likes: 7, __v: 0 },
@@ -11,25 +14,25 @@ const blogs = [
   { _id: "5a422bc61b54a676234d17fc", title: "Type wars", author: "Robert C. Martin", url: "http://blog.cleancoder.com/uncle-bob/2016/05/01/TypeWars.html", likes: 2, __v: 0 }
 ]
 
-router.post('/reset', async (request, response) => {
+router.post('/init-database', async (request, response) => {
+  const { username, name, password } = dummyUser
+  const passwordHash = await bcrypt.hash(password, 10)
+  const dummy = await new User({
+    username,
+    name,
+    passwordHash,
+  }).save()
+
+  const _blogs = blogs.map(b => { b.user = dummy.id; return b; })
+  await Blog.insertMany(_blogs)
+  dummy.blogs = _blogs
+  await dummy.save()
+  response.status(204).end()
+})
+
+router.post('/drop-database', async (request, response) => {
   await Blog.deleteMany({})
   await User.deleteMany({})
-
-  response.status(204).end()
-})
-
-router.post('/blogs/insertmany', async (request, response) => {
-  await Blog.insertMany(blogs);
-  response.status(204).end()
-})
-
-router.post('/blogs/deletemany', async (request, response) => {
-  await Blog.deleteMany({});
-  response.status(204).end()
-})
-
-router.get('/blogs/deletemany', async (request, response) => {
-  await Blog.deleteMany({});
   response.status(204).end()
 })
 

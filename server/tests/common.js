@@ -10,7 +10,7 @@ const usersInDb = async () => {
   return users.map(u => u.toJSON())
 }
 
-const login = async (user) => {
+const login = async user => {
   const response = await api
     .post('/api/login')
     .send(user)
@@ -18,7 +18,7 @@ const login = async (user) => {
   return response.body.token
 }
 
-const createUser = async (user) => {
+const createUser = async user => {
   const response = await api
     .post('/api/users')
     .send(user)

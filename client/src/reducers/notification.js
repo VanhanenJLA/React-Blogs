@@ -1,4 +1,4 @@
-const notificationReducer = (state = null, action) => {
+const reducer = (state = null, action) => {
 
   switch (action.type) {
 
@@ -35,4 +35,4 @@ export const hide = () => {
   return { type: 'CLEAR_NOTIFICATION' }
 }
 
-export default notificationReducer
+export default { reducer, show, hide }

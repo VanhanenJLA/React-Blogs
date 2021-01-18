@@ -32,10 +32,11 @@ const initialize = async () => {
   await User.deleteMany({})
   await Blog.deleteMany({})
   const user = await createUser(dummyUser)
-  await Blog.insertMany(initialBlogs.map(b => {
+  const blogs = initialBlogs.map(b => {
     b.user = user.id
     return b
-  }))
+  })
+  await Blog.insertMany(blogs)
 }
 
 beforeAll(async () => {

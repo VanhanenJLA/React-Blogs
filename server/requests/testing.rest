@@ -1,0 +1,14 @@
+@url = http://localhost:3001/api/testing/
+
+POST {{url}}/drop-database
+Content-Type: application/json
+
+{
+}
+
+###
+POST {{url}}/init-database
+Content-Type: application/json
+
+{
+}
