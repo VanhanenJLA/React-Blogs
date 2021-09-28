@@ -1,8 +1,8 @@
-import express from 'express'
+const express = require('express')
 require('express-async-errors')
 const app = express()
-import { connect as mongooseConnect, ConnectionOptions } from 'mongoose'
-import cors from 'cors'
+import { connect as mongooseConnect } from 'mongoose'
+const cors = require('cors')
 import config from './utils/config'
 import logger from './utils/logger'
 import middleware from './utils/middleware'
@@ -11,17 +11,17 @@ import usersRouter from './controllers/users'
 import loginRouter from './controllers/login'
 import testRouter from './controllers/testing'
 
-
+// const options: mongoose.ConnectionOptions = {
+//   useNewUrlParser: true,
+//   useUnifiedTopology: true,
+// }
 
 const connect = async () => {
   const { MONGO_URI } = config;
 
   logger.info('connecting to', MONGO_URI)
-  const options: ConnectionOptions = {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-  }
-  await mongooseConnect(MONGO_URI, options)
+
+  await mongooseConnect(MONGO_URI)
   logger.info('connected to MongoDB')
 }
 

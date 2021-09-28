@@ -1,16 +1,20 @@
-import { set, Document, Schema, model } from 'mongoose';
+import { set, Document, Schema, model, Model } from 'mongoose';
 import uniqueValidator from 'mongoose-unique-validator';
-import Blog from './blog';
-set('useCreateIndex', true);
+import { IBlog } from './blog';
 
-interface User extends Document {
+// set('useCreateIndex', true);
+
+interface IUser {
   username: string;
   name: string;
   passwordHash: string;
-  blogs: Array<Blog>;
+  blogs: Array<IBlog>;
 }
 
-const userSchema = new Schema({
+interface IUserSchema extends IUser, Schema { };
+interface IUserDocument extends IUser, Document { };
+
+const userSchema = new Schema<IUserSchema>({
   username: {
     type: String,
     unique: true,
@@ -44,6 +48,6 @@ userSchema.set('toJSON', {
 
 userSchema.plugin(uniqueValidator)
 
-const User = model('User', userSchema)
+const User = model<IUserDocument>('User', userSchema)
 
 export default User;

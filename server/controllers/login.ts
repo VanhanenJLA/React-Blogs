@@ -1,5 +1,5 @@
-import jwt from 'jsonwebtoken'
-import bcrypt from 'bcrypt'
+import * as jwt from 'jsonwebtoken'
+import * as bcrypt from 'bcrypt'
 import User from '../models/user'
 import config from '../utils/config'
 
@@ -16,8 +16,8 @@ loginRouter.post('/', async (request, response) => {
       message: `No username: ${username} found.`
     }
 
-  const passwordCorrect = await bcrypt.compare(password, user.passwordHash)
-  if (!passwordCorrect)
+  const isCorrectPassword = await bcrypt.compare(password, user.passwordHash)
+  if (!isCorrectPassword)
     throw {
       name: 'LoginError',
       message: 'Password incorrect.'

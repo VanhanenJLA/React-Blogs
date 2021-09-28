@@ -1,20 +1,24 @@
-import { Document, Schema, model, set } from 'mongoose';
+import { Document, Schema, model, set, Model } from 'mongoose';
 import uniqueValidator from 'mongoose-unique-validator';
 
-set('useFindAndModify', false)
-set('useCreateIndex', true);
+// set('useFindAndModify', false)
+// set('useCreateIndex', true);
 
-interface Blog extends Document {
-  _id: string;
+export interface IBlog {
   title: string;
   author: string;
   url: string;
   likes: number;
+  user: string | {};
+  comments: Array<string>;
+  id: string;
   __v: number;
-  user: string;
 }
 
-const blogSchema = new Schema<Blog>({
+interface BlogSchema extends Schema, IBlog { };
+interface BlogModel extends Model<IBlog>, IBlog { };
+
+const blogSchema = new Schema<BlogSchema>({
   title: { type: String, required: true },
   author: { type: String, required: true },
   url: { type: String, required: true, unique: true },
@@ -37,5 +41,5 @@ blogSchema.set('toJSON', {
 })
 
 blogSchema.plugin(uniqueValidator)
-const Blog = model('Blog', blogSchema)
+const Blog = model<BlogModel>('Blog', blogSchema)
 export default Blog

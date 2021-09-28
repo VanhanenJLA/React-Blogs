@@ -1,5 +1,5 @@
-import bcrypt from 'bcrypt'
 const usersRouter = require('express').Router()
+import * as bcrypt from 'bcrypt'
 import User from '../models/user'
 
 usersRouter.get('/', async (request, response) => {
